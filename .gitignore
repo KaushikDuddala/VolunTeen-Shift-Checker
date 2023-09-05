@@ -1,0 +1,7 @@
+._git
+._index.js
+._node_modules
+._package-lock.json
+._package.json
+package.json
+_node_modules/
