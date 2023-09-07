@@ -5,3 +5,6 @@
 ._package.json
 package.json
 _node_modules/
+node_modules/
+config.json
+package-lock.json
