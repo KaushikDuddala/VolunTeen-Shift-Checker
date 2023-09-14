@@ -84,3 +84,13 @@ async function main(){
 }
 
 setInterval(main, 600000)
+
+const express = require('express')
+const app = express()
+const port = 10000
+
+app.get('/', (req, res) => {
+  res.send('Server running.')
+})
+
+app.listen(port, () => {})
