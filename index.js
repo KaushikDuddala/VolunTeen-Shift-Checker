@@ -67,21 +67,20 @@ async function getVolunteeringShifts(loginContext){
     return {"shiftsAvailable": shiftsAvailable, "shiftsNumbers": shiftsNumbers}
 }
 
-let shiftNumberKeeper;
+let shiftNumberKeeper = [];
 
 async function main(){
-    
     shifts = await getVolunteeringShifts(await getAuthToken(config))
-    if(shifts.shiftsNumbers == shiftNumberKeeper){
+    if(shifts.shiftsNumbers.toString() == shiftNumberKeeper.toString()){
         console.log("No new shifts")
     }else{
-        fetch('https://ntfy.sh/fplvolunteenoppalerterV2', {
+        await fetch('https://ntfy.sh/fplvolunteenoppalerterV2', {
             method: 'POST', // PUT works too
             body: 'New shifts available!'
         })
-    console.log("New shifts available!")
+        console.log("New shifts available!")
     }
-    shiftsNumbersKeeper = shifts.shiftsNumbers
+    shiftNumberKeeper = shifts.shiftsNumbers
 }
 
-setInterval(main, 60000)
+setInterval(main, 600000)
