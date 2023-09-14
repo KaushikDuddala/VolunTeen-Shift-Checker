@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const config = env.config
+const config = require(".env");
 
 async function getAuthToken(config){
     
