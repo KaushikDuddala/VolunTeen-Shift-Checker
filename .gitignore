@@ -8,3 +8,5 @@ _node_modules/
 node_modules/
 config.json
 package-lock.json
+.*
+.*/

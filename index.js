@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const config = {"username":process.env.username, "password":process.env.password}
+const config = {"username":process.env["username"], "password":process.env["password"]}
 
 async function getAuthToken(config){
     
