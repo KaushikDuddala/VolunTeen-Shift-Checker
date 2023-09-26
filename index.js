@@ -71,9 +71,7 @@ let shiftNumberKeeper = [];
 
 async function main(){
     shifts = await getVolunteeringShifts(await getAuthToken(config))
-    if(shifts.shiftsNumbers.toString() == shiftNumberKeeper.toString()){
-        console.log("No new shifts")
-    }else{
+    if(shifts.shiftsNumbers.toString() != shiftNumberKeeper.toString()){
         await fetch('https://ntfy.sh/fplvolunteenoppalerterV2', {
             method: 'POST', // PUT works too
             body: `Shifts are ${shifts.shiftsNumbers}`,
@@ -81,19 +79,32 @@ async function main(){
               'Title':"New shifts available!"
             }
         })
-        console.log(`New shifts available!`)
     }
     shiftNumberKeeper = shifts.shiftsNumbers
 }
 
 setInterval(main, 600000)
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+    return time;
+}
 
 const express = require('express')
 const app = express()
 const port = 10000
 
 app.get('/', (req, res) => {
-  res.send('Server running.')
+  var time = process.uptime();
+  var uptime = (time + "").toHHMMSS();
+  res.send(uptime)
 })
 
 app.listen(port, () => {})
