@@ -76,9 +76,12 @@ async function main(){
     }else{
         await fetch('https://ntfy.sh/fplvolunteenoppalerterV2', {
             method: 'POST', // PUT works too
-            body: 'New shifts available!'
+            body: `Shifts are ${shifts.shiftsNumbers}`,
+            headers:{
+              'Title':"New shifts available!"
+            }
         })
-        console.log("New shifts available!")
+        console.log(`New shifts available!`)
     }
     shiftNumberKeeper = shifts.shiftsNumbers
 }
