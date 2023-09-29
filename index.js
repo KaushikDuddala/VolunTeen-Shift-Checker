@@ -79,8 +79,8 @@ async function main() {
 
 
 
-//setInterval(main, 6000)
-main()
+setInterval(main, 6000)
+
 String.prototype.toHHMMSS = function () {
     var sec_num = parseInt(this, 10);
     var hours   = Math.floor(sec_num / 3600);
@@ -93,7 +93,7 @@ String.prototype.toHHMMSS = function () {
     var time    = hours+':'+minutes+':'+seconds;
     return time;
 }
-/*
+
 const express = require('express')
 const app = express()
 const port = 10000
@@ -105,4 +105,3 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {})
-*/
