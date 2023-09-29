@@ -36,7 +36,7 @@ async function getAuthToken(config, regexes) {
 }
 
 async function getVolunteeringShifts(loginContext) {
-  let shiftsAvailable = false, shiftsNumbers = [];
+  let shiftsAvailable = false, shiftsNumbers = [], shifts = [];
 
   await fetch("https://app.betterimpact.com/Volunteer/Schedule/FilterOpportunities", {
     "headers": {
@@ -50,11 +50,11 @@ async function getVolunteeringShifts(loginContext) {
     await resText.match(/<td class="right">(\d+?)<\/td>/g).forEach(async item => {
       shiftsNumbers.push(await item.match(/(\d+)/g))
     })
-  });
+    resText.match(/True">(.+?)</g).forEach(item => item.match(/>(.+?)</g).forEach(item2 => shifts.push(`${((item2.split("")).slice(1, item2.length-1)).join("")}`)))});
   if (shiftsNumbers.length > 0) {
     shiftsAvailable = true;
   }
-  return { "shiftsAvailable": shiftsAvailable, "shiftsNumbers": shiftsNumbers }
+  return { "shiftsAvailable": shiftsAvailable, "shiftsNumbers": shiftsNumbers, "shifts":shifts }
 }
 
 let shiftNumberKeeper = [];
@@ -62,9 +62,13 @@ let shiftNumberKeeper = [];
 async function main() {
   shifts = await getVolunteeringShifts(await getAuthToken(config, regexes))
   if (shifts.shiftsNumbers.toString() != shiftNumberKeeper.toString()) {
+    let body = "Shifts available:\n";
+    shifts.shifts.forEach((item, index) => {
+      body = body + item + `: ${shifts.shiftsNumbers[index]} shifts available\n`
+    })
     await fetch('https://ntfy.sh/fplvolunteenoppalerterV2', {
       method: 'POST',
-      body: `Shifts are ${shifts.shiftsNumbers}`,
+      body: body,
       headers: {
         'Title': "New shifts available!"
       }
@@ -75,8 +79,8 @@ async function main() {
 
 
 
-setInterval(main, 6000)
-
+//setInterval(main, 6000)
+main()
 String.prototype.toHHMMSS = function () {
     var sec_num = parseInt(this, 10);
     var hours   = Math.floor(sec_num / 3600);
@@ -89,7 +93,7 @@ String.prototype.toHHMMSS = function () {
     var time    = hours+':'+minutes+':'+seconds;
     return time;
 }
-
+/*
 const express = require('express')
 const app = express()
 const port = 10000
@@ -101,3 +105,4 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {})
+*/
